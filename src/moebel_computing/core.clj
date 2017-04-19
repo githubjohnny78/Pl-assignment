@@ -2,37 +2,6 @@
   (use moebel-computing.accounts)
   (:gen-class))
 
-#_((def accounts-payable    (atom 0))
-   (def accounts-receivable (atom 0))
-
-   (defn zero-accounts []
-     (reset! accounts-payable    0)
-     (reset! accounts-receivable 0))
-
-   (defn register-income [amount] (swap! accounts-receivable + amount))
-   (defn register-debt   [amount] (swap! accounts-payable    + amount))
-
-   
-
-   (def accounts-payable    (ref 0))
-   (def accounts-receivable (ref 0))
-
-   (defn zero-accounts []
-     (dosync
-      (ref-set accounts-payable    0)
-      (ref-set accounts-receivable 0)))
-
-   (defn register-income [amount] (alter accounts-receivable + amount))
-   (defn register-debt   [amount] (alter accounts-payable    + amount))
-
-   (defn take-order [product quantity]
-     (future
-       (dosync
-        (register-debt   (compute-materials-cost product quantity))
-        (register-income (compute-order-price    product quantity))
-        (projected-profit)))))
-
-
 (def profit-markup 1.1)
 
 (def component->price
